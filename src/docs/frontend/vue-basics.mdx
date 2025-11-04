@@ -1,0 +1,113 @@
+---
+title: "Vue.js 基础教程"
+category: "frontend"
+order: 2
+---
+
+# Vue.js 基础教程
+
+## Vue.js 简介
+
+Vue.js 是一套用于构建用户界面的渐进式框架，由尤雨溪创建。它易于上手，功能强大。
+
+## 核心特性
+
+### 1. 响应式数据绑定
+Vue 使用数据劫持和发布订阅模式实现数据的响应式更新。
+
+```vue
+<template>
+  <div>
+    <p>{{ message }}</p>
+    <button @click="reverseMessage">反转消息</button>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      message: 'Hello Vue!'
+    }
+  },
+  methods: {
+    reverseMessage() {
+      this.message = this.message.split('').reverse().join('');
+    }
+  }
+}
+</script>
+```
+
+### 2. 组件系统
+Vue 的组件系统让应用更加模块化。
+
+```vue
+<!-- TodoItem.vue -->
+<template>
+  <li>{{ todo.text }}</li>
+</template>
+
+<script>
+export default {
+  props: ['todo']
+}
+</script>
+```
+
+### 3. 指令系统
+Vue 提供了一系列内置指令来简化 DOM 操作。
+
+```vue
+<template>
+  <div>
+    <p v-if="show">这段文字会根据show的值显示或隐藏</p>
+    <ul>
+      <li v-for="item in items" :key="item.id">
+        {{ item.name }}
+      </li>
+    </ul>
+  </div>
+</template>
+```
+
+## Composition API（Vue 3）
+
+Vue 3 引入了 Composition API，提供了更好的逻辑复用能力。
+
+```vue
+<template>
+  <div>
+    <p>Count: {{ count }}</p>
+    <button @click="increment">增加</button>
+  </div>
+</template>
+
+<script>
+import { ref } from 'vue'
+
+export default {
+  setup() {
+    const count = ref(0)
+    
+    const increment = () => {
+      count.value++
+    }
+    
+    return {
+      count,
+      increment
+    }
+  }
+}
+</script>
+```
+
+## 学习建议
+
+1. **先掌握基础**：理解响应式原理、组件通信
+2. **实践项目**：从简单的待办事项开始
+3. **学习工具链**：Vue CLI、Vite、Vue Router、Vuex/Pinia
+4. **关注生态**：了解常用的 Vue 生态库
+
+Vue.js 是一个优秀的前端框架，祝你学习愉快！

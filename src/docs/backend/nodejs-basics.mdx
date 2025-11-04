@@ -1,0 +1,44 @@
+---
+title: "Node.js 基础教程"
+category: "backend"
+order: 1
+---
+
+# Node.js 基础教程
+
+## Node.js 简介
+
+Node.js 是一个基于 Chrome V8 引擎的 JavaScript 运行时环境，让开发者可以使用 JavaScript 编写服务器端应用。
+
+## 核心特性
+
+### 1. 事件驱动
+Node.js 使用事件驱动、非阻塞 I/O 模型，使其轻量且高效。
+
+### 2. 模块系统
+Node.js 拥有强大的模块系统，可以轻松管理依赖关系。
+
+```javascript
+// 导入模块
+const fs = require('fs');
+const http = require('http');
+
+// 创建简单的HTTP服务器
+const server = http.createServer((req, res) => {
+  res.writeHead(200, { 'Content-Type': 'text/plain' });
+  res.end('Hello, Node.js!');
+});
+
+server.listen(3000, () => {
+  console.log('服务器运行在 http://localhost:3000');
+});
+```
+
+## 学习建议
+
+1. **理解事件循环**：掌握Node.js的核心机制
+2. **学习常用模块**：fs、http、path等
+3. **实践项目**：从简单的API服务器开始
+4. **了解框架**：Express、Koa等Web框架
+
+Node.js 是现代后端开发的重要工具，祝你学习愉快！
