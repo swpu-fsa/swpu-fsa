@@ -1,0 +1,316 @@
+---
+title: "Git 常用命令教程"
+order: 1
+---
+
+# Git 常用命令教程
+
+Git 是目前最流行的分布式版本控制系统，用于跟踪文件的变化和协调多人之间的工作。本教程将介绍 Git 的常用命令和基本操作。
+
+## 基础配置
+
+### 配置用户信息
+```bash
+# 配置用户名
+git config --global user.name "你的名字"
+
+# 配置邮箱
+git config --global user.email "你的邮箱@example.com"
+
+# 查看配置
+git config --list
+```
+
+## 仓库操作
+
+### 初始化仓库
+```bash
+# 在当前目录初始化 Git 仓库
+git init
+
+# 克隆远程仓库
+git clone <仓库地址>
+```
+
+### 查看状态
+```bash
+# 查看工作区状态
+git status
+
+# 查看简洁状态
+git status -s
+```
+
+## 文件操作
+
+### 添加文件到暂存区
+```bash
+# 添加指定文件
+git add <文件名>
+
+# 添加所有文件
+git add .
+
+# 添加所有修改的文件
+git add -A
+```
+
+### 提交更改
+```bash
+# 提交并添加提交信息
+git commit -m "提交信息"
+
+# 跳过暂存区直接提交
+git commit -am "提交信息"
+```
+
+### 查看差异
+```bash
+# 查看工作区与暂存区的差异
+git diff
+
+# 查看暂存区与最新提交的差异
+git diff --cached
+
+# 查看工作区与最新提交的差异
+git diff HEAD
+```
+
+## 分支操作
+
+### 查看分支
+```bash
+# 查看本地分支
+git branch
+
+# 查看所有分支（包括远程分支）
+git branch -a
+
+# 查看分支的详细信息
+git branch -v
+```
+
+### 创建和切换分支
+```bash
+# 创建新分支
+git branch <分支名>
+
+# 切换到指定分支
+git checkout <分支名>
+
+# 创建并切换到新分支
+git checkout -b <分支名>
+
+# 切换到上一个分支
+git checkout -
+```
+
+### 合并分支
+```bash
+# 将指定分支合并到当前分支
+git merge <分支名>
+
+# 合并但不提交
+git merge --no-commit <分支名>
+```
+
+### 删除分支
+```bash
+# 删除本地分支
+git branch -d <分支名>
+
+# 强制删除分支
+git branch -D <分支名>
+```
+
+## 远程操作
+
+### 查看远程仓库
+```bash
+# 查看远程仓库
+git remote
+
+# 查看远程仓库详细信息
+git remote -v
+```
+
+### 推送和拉取
+```bash
+# 推送到远程仓库
+git push
+
+# 推送到指定远程仓库和分支
+git push <远程仓库名> <分支名>
+
+# 从远程仓库拉取
+git pull
+
+# 获取远程更新但不合并
+git fetch
+```
+
+## 撤销操作
+
+### 撤销工作区修改
+```bash
+# 撤销指定文件的修改
+git checkout -- <文件名>
+
+# 撤销所有文件的修改
+git checkout .
+```
+
+### 撤销暂存区操作
+```bash
+# 将文件从暂存区移除
+git reset HEAD <文件名>
+
+# 清空暂存区
+git reset HEAD
+```
+
+### 撤销提交
+```bash
+# 撤销最后一次提交（保留修改）
+git reset --soft HEAD~1
+
+# 撤销最后一次提交（不保留修改）
+git reset --hard HEAD~1
+
+# 撤销到指定提交
+git reset --hard <提交哈希>
+```
+
+## 查看历史
+
+### 查看提交历史
+```bash
+# 查看提交历史
+git log
+
+# 查看简洁的提交历史
+git log --oneline
+
+# 查看图形化历史
+git log --graph --oneline
+
+# 查看指定文件的修改历史
+git log -p <文件名>
+```
+
+### 查看文件历史
+```bash
+# 查看文件在指定提交的内容
+git show <提交哈希>:<文件名>
+
+# 查看文件的修改统计
+git log --stat <文件名>
+```
+
+## 标签操作
+
+### 创建标签
+```bash
+# 创建轻量标签
+git tag <标签名>
+
+# 创建附注标签
+git tag -a <标签名> -m "标签信息"
+
+# 为指定提交创建标签
+git tag <标签名> <提交哈希>
+```
+
+### 推送标签
+```bash
+# 推送指定标签
+git push origin <标签名>
+
+# 推送所有标签
+git push origin --tags
+```
+
+## 实用技巧
+
+### 暂存当前工作
+```bash
+# 暂存当前工作
+git stash
+
+# 查看暂存列表
+git stash list
+
+# 恢复暂存的工作
+git stash pop
+
+# 应用指定暂存
+git stash apply <暂存名>
+```
+
+### 查找问题提交
+```bash
+# 二分查找问题提交
+git bisect start
+git bisect bad  # 标记当前提交有问题
+git bisect good <好的提交哈希>  # 标记某个提交是好的
+git bisect run <测试命令>  # 自动测试
+git bisect reset  # 结束二分查找
+```
+
+### 修改最后一次提交
+```bash
+# 修改最后一次提交的信息
+git commit --amend -m "新的提交信息"
+
+# 将新的修改添加到最后一次提交
+git add <文件>
+git commit --amend --no-edit
+```
+
+## 工作流程建议
+
+### 日常开发流程
+1. **开始新功能开发**
+   ```bash
+   git checkout -b feature/新功能名
+   ```
+
+2. **开发过程中**
+   ```bash
+   git add .
+   git commit -m "开发进度"
+   ```
+
+3. **完成开发**
+   ```bash
+   git checkout main
+   git merge feature/新功能名
+   git push origin main
+   ```
+
+### 团队协作流程
+1. **同步最新代码**
+   ```bash
+   git pull origin main
+   ```
+
+2. **解决冲突后提交**
+   ```bash
+   git add .
+   git commit -m "解决冲突"
+   ```
+
+3. **推送代码**
+   ```bash
+   git push origin main
+   ```
+
+## 总结
+
+Git 的核心概念：
+- **工作区**：你实际编辑文件的地方
+- **暂存区**：准备提交的文件存放区域
+- **本地仓库**：本地的版本历史记录
+- **远程仓库**：共享的版本历史记录
+
+掌握这些常用命令，你就可以应对大部分 Git 操作场景了。记住，多练习是掌握 Git 的最好方法！

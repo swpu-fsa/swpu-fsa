@@ -35,7 +35,7 @@ export default function Theme() {
           checked={isDark}
           onCheckedChange={toggleDarkMode}
           className={clsx(
-            'h-5.5 w-10 data-[state=checked]:bg-[#959bb5] data-[state=unchecked]:bg-[#faf4e6]',
+            'h-5.5 w-10 data-[state=checked]:bg-[#959bb5] data-[state=unchecked]:bg-[#fcf8ef]',
             '**:data-[slot=switch-thumb]:size-4.5 **:data-[slot=switch-thumb]:data-[state=checked]:translate-x-5',
           )}
         />
@@ -46,7 +46,7 @@ export default function Theme() {
             isDark ? 'opacity-0' : 'opacity-100',
           )}
         >
-          <Sun className="w-3 h-3 text-yellow-500" />
+          <Sun className="w-3 h-3 text-yellow-400" />
         </div>
         {/* 月亮图标 */}
         <div
