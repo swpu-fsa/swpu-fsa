@@ -162,10 +162,24 @@ export default function Document({
           {document({
             components: {
               code: ({ children }) => (
-                <div className="bg-[#f5f2ff] dark:bg-[#2a2d3a] p-4 rounded-md">
+                <div className="mt-1 bg-[#f5f2ff] dark:bg-[#2a2d3a] p-4 rounded-lg">
                   {children}
                 </div>
               ),
+              h1: ({ children }) => (
+                <h1 className="mt-8 text-3xl font-bold text-[#6a4e65] dark:text-violet-400">
+                  {children}
+                </h1>
+              ),
+              h2: ({ children }) => (
+                <h2 className="mt-6 text-xl font-bold text-[#6c59a9] dark:text-violet-300">
+                  {children}
+                </h2>
+              ),
+              h3: ({ children }) => (
+                <h3 className="mt-4 text-lg font-bold">{children}</h3>
+              ),
+              p: ({ children }) => <p className="mt-2 text-base">{children}</p>,
             },
           })}
         </article>
