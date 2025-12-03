@@ -1,7 +1,18 @@
 import clsx from 'clsx';
+import { useNavigate } from 'react-router';
 import Navbar from './components/navbar';
 
 export default function Swpu() {
+  const navigate = useNavigate();
+
+  const inGuides = () => {
+    navigate('/docs/guides/git/git-commands');
+  };
+
+  const inCoding = () => {
+    navigate('/docs/coding/welcome/intro');
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -40,6 +51,7 @@ export default function Swpu() {
                 'hover:bg-[#7d6bad] dark:hover:bg-[#6a6fa9]',
                 'active:bg-[#5f536b] dark:active:bg-[#77c1e4]',
               )}
+              onClick={inGuides}
             >
               开源入门
             </button>
@@ -51,6 +63,7 @@ export default function Swpu() {
                 'hover:bg-[#7d6bad] dark:hover:bg-[#6a6fa9]',
                 'active:bg-[#5f536b] dark:active:bg-[#77c1e4]',
               )}
+              onClick={inCoding}
             >
               项目参与
             </button>

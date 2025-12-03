@@ -22,7 +22,8 @@ interface GlobDoc {
 
 interface DocInfo {
   path: string;
-  direction: string;
+  group: string;
+  entry: string;
   title: string;
   order: number;
   document: MDXContent;
@@ -32,76 +33,97 @@ const docs: Record<string, GlobDoc> = import.meta.glob('./docs/**/*.mdx', {
   eager: true,
 });
 
-// 所有文档数据
 const allDocs: DocInfo[] = Object.entries(docs).map(([key, value]) => {
   const pathParts = key.split('/');
   const docsIndex = pathParts.indexOf('docs');
-  const direction =
+
+  const group =
     docsIndex !== -1 && pathParts.length > docsIndex + 1
       ? pathParts[docsIndex + 1]
       : '';
 
+  const entry =
+    docsIndex !== -1 && pathParts.length > docsIndex + 2
+      ? pathParts[docsIndex + 2]
+      : '';
+
   return {
     path: key.replace('.', '').replace('.mdx', ''),
-    direction,
+    group,
+    entry,
     title: value.frontmatter.title,
     order: value.frontmatter.order,
     document: value.default,
   };
 });
 
-// 按照方向分组
-const docsByDirection = allDocs.reduce(
+const docsStruct = allDocs.reduce(
   (acc, doc) => {
-    if (!acc[doc.direction]) {
-      acc[doc.direction] = [];
+    if (!acc[doc.group]) {
+      acc[doc.group] = {};
     }
-    acc[doc.direction].push(doc);
+    if (!acc[doc.group][doc.entry]) {
+      acc[doc.group][doc.entry] = [];
+    }
+    acc[doc.group][doc.entry].push(doc);
     return acc;
   },
-  {} as Record<string, DocInfo[]>,
+  {} as Record<string, Record<string, DocInfo[]>>,
 );
 
-// 方法本身排序
-const directionOrder = ['git', 'frontend', 'backend'];
+const groupOrder = ['guides', 'coding'];
 
-const sortedDirections = directionOrder
-  .filter((direction) => docsByDirection[direction])
+const entryOrder = {
+  guides: ['git', 'frontend', 'backend'],
+  coding: ['welcome', 'projects'],
+};
+
+const sortedGroups = groupOrder
+  .filter((group) => docsStruct[group])
   .concat(
-    Object.keys(docsByDirection).filter(
-      (direction) => !directionOrder.includes(direction),
-    ),
+    Object.keys(docsStruct).filter((group) => !groupOrder.includes(group)),
   );
 
-// 方向内部排序
-Object.keys(docsByDirection).forEach((direction) => {
-  docsByDirection[direction].sort((a, b) => a.order - b.order);
+const sortedEntries: Record<string, string[]> = {};
+sortedGroups.forEach((group) => {
+  const entries = Object.keys(docsStruct[group]);
+  const order = entryOrder[group as keyof typeof entryOrder] || [];
+
+  sortedEntries[group] = order
+    .filter((entry) => entries.includes(entry))
+    .concat(entries.filter((entry) => !order.includes(entry)));
+});
+
+Object.keys(docsStruct).forEach((group) => {
+  Object.keys(docsStruct[group]).forEach((entry) => {
+    docsStruct[group][entry].sort((a, b) => a.order - b.order);
+  });
 });
 
 export const docsRoutes = allDocs.map((doc) => ({
   path: doc.path,
   element: (
     <Document
-      document={doc.document}
-      docsByDirection={docsByDirection}
-      sortedDirections={sortedDirections}
       currentPath={doc.path}
+      document={doc.document}
+      docsStruct={docsStruct}
+      sortedEntries={sortedEntries}
     />
   ),
 }));
 
 export interface DocumentProps {
-  document: MDXContent;
-  docsByDirection: Record<string, DocInfo[]>;
-  sortedDirections: string[];
   currentPath: string;
+  document: MDXContent;
+  docsStruct: Record<string, Record<string, DocInfo[]>>;
+  sortedEntries: Record<string, string[]>;
 }
 
 export default function Document({
-  document,
-  docsByDirection,
-  sortedDirections,
   currentPath,
+  document,
+  docsStruct,
+  sortedEntries,
 }: DocumentProps) {
   const navigate = useNavigate();
 
@@ -110,6 +132,8 @@ export default function Document({
       navigate(docPath);
     }
   };
+
+  const currentGroup = currentPath.split('/')[2];
 
   return (
     <div
@@ -128,33 +152,34 @@ export default function Document({
           )}
         >
           <div className="w-full px-12 flex flex-col items-start">
-            {sortedDirections.map((direction) => (
-              <div key={direction} className="flex flex-col mb-4">
-                <span
-                  className={clsx(
-                    'font-semibold capitalize',
-                    'text-[#6a4e65] dark:text-violet-400',
-                  )}
-                >
-                  {direction}
-                </span>
-                {docsByDirection[direction].map((doc) => (
-                  <button
-                    type="button"
-                    key={doc.path}
-                    onClick={() => handleSwitch(doc.path)}
+            {currentGroup &&
+              sortedEntries[currentGroup]?.map((entry) => (
+                <div key={entry} className="flex flex-col mb-2">
+                  <span
                     className={clsx(
-                      'ml-2 text-sm cursor-pointer',
-                      doc.path === currentPath
-                        ? 'text-[#6c59a9] dark:text-violet-300 font-medium'
-                        : 'text-[#9c91c0] hover:text-[#8775c0] dark:text-gray-400 dark:hover:text-gray-200',
+                      'font-medium capitalize mb-1',
+                      'text-[#6a4e65] dark:text-violet-400',
                     )}
                   >
-                    {doc.title}
-                  </button>
-                ))}
-              </div>
-            ))}
+                    {entry}
+                  </span>
+                  {docsStruct[currentGroup]?.[entry]?.map((doc) => (
+                    <button
+                      type="button"
+                      key={doc.path}
+                      onClick={() => handleSwitch(doc.path)}
+                      className={clsx(
+                        'ml-2 mb-1 text-sm cursor-pointer inline-block w-fit',
+                        doc.path === currentPath
+                          ? 'text-[#6c59a9] dark:text-violet-300 font-medium'
+                          : 'text-[#9c91c0] hover:text-[#8775c0] dark:text-gray-400 dark:hover:text-gray-200',
+                      )}
+                    >
+                      {doc.title}
+                    </button>
+                  ))}
+                </div>
+              ))}
           </div>
         </div>
 
