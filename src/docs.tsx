@@ -13,6 +13,8 @@ import Navbar from './components/navbar';
 interface Frontmatter {
   title: string;
   order: number;
+  seniorMessage: string;
+  githubLink: string;
 }
 
 interface GlobDoc {
@@ -27,6 +29,8 @@ interface DocInfo {
   title: string;
   order: number;
   document: MDXContent;
+  seniorMessage: string;
+  githubLink: string;
 }
 
 const docs: Record<string, GlobDoc> = import.meta.glob('./docs/**/*.mdx', {
@@ -54,6 +58,8 @@ const allDocs: DocInfo[] = Object.entries(docs).map(([key, value]) => {
     title: value.frontmatter.title,
     order: value.frontmatter.order,
     document: value.default,
+    seniorMessage: value.frontmatter.seniorMessage,
+    githubLink: value.frontmatter.githubLink,
   };
 });
 
@@ -106,6 +112,8 @@ export const docsRoutes = allDocs.map((doc) => ({
     <Document
       currentPath={doc.path}
       document={doc.document}
+      seniorMessage={doc.seniorMessage}
+      githubLink={doc.githubLink}
       docsStruct={docsStruct}
       sortedEntries={sortedEntries}
     />
@@ -115,6 +123,8 @@ export const docsRoutes = allDocs.map((doc) => ({
 export interface DocumentProps {
   currentPath: string;
   document: MDXContent;
+  seniorMessage: string;
+  githubLink: string;
   docsStruct: Record<string, Record<string, DocInfo[]>>;
   sortedEntries: Record<string, string[]>;
 }
@@ -122,6 +132,8 @@ export interface DocumentProps {
 export default function Document({
   currentPath,
   document,
+  seniorMessage,
+  githubLink,
   docsStruct,
   sortedEntries,
 }: DocumentProps) {
@@ -220,20 +232,34 @@ export default function Document({
                 )}
               />
               <CarouselContent>
-                <CarouselItem>
-                  <div
-                    className={clsx(
-                      'w-full max-w-full rounded-lg p-3 min-h-32',
-                      'flex flex-col items-center justify-center gap-1',
-                      'bg-linear-to-br from-[#d0a8d0] to-[#5596d3]',
-                      'dark:from-[#ad86ae] dark:to-[#3182ce]',
-                      'text-white text-center',
-                    )}
-                  >
-                    <h3 className="font-bold">学长留言</h3>
-                    <p className="text-xs">??</p>
-                  </div>
-                </CarouselItem>
+                {seniorMessage && (
+                  <CarouselItem>
+                    <div
+                      className={clsx(
+                        'w-full max-w-full rounded-lg p-3 min-h-32',
+                        'flex flex-col items-center justify-center gap-1.5',
+                        'bg-linear-to-br from-[#ceabce] to-[#5c98d1]',
+                        'dark:from-[#ad86ae] dark:to-[#3182ce]',
+                        'text-white/90 dark:text-white/80 text-center',
+                      )}
+                    >
+                      <h3 className="font-bold">学长留言</h3>
+                      <p className="text-xs font-medium text-[#fff7cc] dark:text-[#ebe2fd]">
+                        {seniorMessage}
+                      </p>
+                      {githubLink && (
+                        <a
+                          href={githubLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-xs text-white/70 hover:text-white hover:underline"
+                        >
+                          @Github
+                        </a>
+                      )}
+                    </div>
+                  </CarouselItem>
+                )}
                 <CarouselItem>
                   <div
                     className={clsx(
@@ -241,7 +267,7 @@ export default function Document({
                       'flex flex-col items-center justify-center gap-1',
                       'bg-linear-to-br from-[#d0a8d0] to-[#5596d3]',
                       'dark:from-[#ad86ae] dark:to-[#3182ce]',
-                      'text-white text-center',
+                      'text-white/90 dark:text-white/80 text-center',
                     )}
                   >
                     <h3 className="font-bold">SWPU-FSA</h3>
