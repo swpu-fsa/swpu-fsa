@@ -15,6 +15,9 @@ interface Frontmatter {
   order: number;
   seniorMessage: string;
   githubLink: string;
+  startYear: number;
+  startMonth: number;
+  startDay: number;
 }
 
 interface GlobDoc {

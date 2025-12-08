@@ -416,10 +416,20 @@ export const CalendarDatePagination = ({
 
   return (
     <div className={cn('flex items-center gap-2', className)}>
-      <Button onClick={handlePreviousMonth} size="icon" variant="ghost">
+      <Button
+        onClick={handlePreviousMonth}
+        size="icon"
+        variant="ghost"
+        className="hover:bg-[#ffe7ff]/60"
+      >
         <ChevronLeftIcon size={16} />
       </Button>
-      <Button onClick={handleNextMonth} size="icon" variant="ghost">
+      <Button
+        onClick={handleNextMonth}
+        size="icon"
+        variant="ghost"
+        className="hover:bg-[#ffe7ff]/60"
+      >
         <ChevronRightIcon size={16} />
       </Button>
     </div>
