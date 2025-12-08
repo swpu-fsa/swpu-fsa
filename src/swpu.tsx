@@ -13,6 +13,10 @@ export default function Swpu() {
     navigate('/docs/coding/welcome/intro');
   };
 
+  const inCalendar = () => {
+    navigate('/calendar');
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -75,6 +79,7 @@ export default function Swpu() {
                 'hover:bg-[#7d6bad] dark:hover:bg-[#6a6fa9]',
                 'active:bg-[#5f536b] dark:active:bg-[#77c1e4]',
               )}
+              onClick={inCalendar}
             >
               活动日历
             </button>
