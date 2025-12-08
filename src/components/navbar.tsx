@@ -34,12 +34,9 @@ export default function Navbar() {
               to={item.path}
               className={clsx(
                 'px-4 py-2 rounded-md font-medium',
-                // 字体颜色始终不变
                 'text-[#685264] dark:text-violet-300',
-                // 当前页面：深色背景
                 location.pathname === item.path &&
                   'bg-[#a99ad3] dark:bg-[#242c3b]',
-                // 悬停状态：浅色背景
                 location.pathname !== item.path &&
                   'hover:bg-[#b3a5d9] dark:hover:bg-[#1a1f2a]',
               )}
