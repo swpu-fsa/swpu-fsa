@@ -43,7 +43,7 @@ export default function Swpu() {
               Southwest Petroleum University
             </span>
             <span className="text-2xl font-bold text-[#7d74b0] dark:text-[#404a8a]">
-              Free Source Association
+              Free Software Association
             </span>
           </div>
           <div className="flex flex-row items-center justify-center gap-3">

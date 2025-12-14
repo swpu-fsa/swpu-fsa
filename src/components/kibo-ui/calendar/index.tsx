@@ -299,7 +299,7 @@ export const CalendarBody = ({ features, children }: CalendarBodyProps) => {
             index % 7 === 6 && 'border-r-0',
             index < 7 && 'border-t-0',
           )}
-          key={index}
+          key={`kibo-${index}-day-${day}`}
         >
           {day}
         </div>
