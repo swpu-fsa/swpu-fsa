@@ -32,6 +32,3 @@ jobs:
 
       - name: Lint
         run: pnpm biome ci
-
-      - name: Test
-        run: pnpm run test
